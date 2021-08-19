@@ -1,13 +1,20 @@
 const { sqrt, log, exp, cos, PI, pow, SQRT2, floor } = Math;
 const sqr = (x: number) => x * x;
 
+// \operatorname{sum}(x)=\sum{x}
+export function sum(xs: number[]) {
+  let n = xs.length;
+  let sx = 0;
+  for (let i = 0; i < n; i++) {
+      sx += xs[i];
+  }
+  return sx;
+}
+
+// \operatorname{mean}(x)=\frac{\sum{x}}{n}
 export function mean(xs: number[]) {
-    var n = xs.length;
-    var sx = 0;
-    for (let i = 0; i < n; i++) {
-        sx += xs[i];
-    }
-    return sx / n;
+  let n = xs.length;
+  return sum(xs) / n;
 }
 
 /**

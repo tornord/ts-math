@@ -1,4 +1,5 @@
 import {
+  sum, 
   mean,
   stdev,
   corr,
@@ -16,6 +17,10 @@ import {
 const sqr = (x: number) => x * x;
 
 describe("Math", () => {
+  it("sum", () => {
+    expect(sum([1, 2, 3, 4, 5])).to.equal(15);
+  });
+
   it("mean", () => {
     expect(mean([2, 3, 4, 5])).to.equal(3.5);
   });
