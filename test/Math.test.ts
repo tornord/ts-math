@@ -1,5 +1,6 @@
+import { expect } from "chai";
 import {
-  sum, 
+  sum,
   mean,
   stdev,
   corr,
