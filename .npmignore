@@ -1,0 +1,6 @@
+.mocharc.json
+.vscode/
+Numeric_Documentation.mht
+src/
+test/
+tsconfig.json

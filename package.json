@@ -1,12 +1,13 @@
 {
   "name": "ts-math",
   "version": "1.0.0",
-  "description": "A collection of math in Typescript",
-  "main": "index.js",
+  "description": "A collection of math written in Typescript",
+  "main": "lib/index.js",
   "directories": {
     "test": "test"
   },
   "scripts": {
+    "build": "tsc",
     "test": "mocha"
   },
   "repository": {
