@@ -2,6 +2,8 @@ import { expect } from "chai";
 
 import { fmin, round } from "../src";
 
+// http://www.benfrederickson.com/numerical-optimization/
+
 function loss(X: number[]): number {
   var x = X[0],
     y = X[1];
