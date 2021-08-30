@@ -1,21 +1,22 @@
 import { expect } from "chai";
+
 import {
-  sum,
-  mean,
-  stdev,
+  centralWeightedStdev,
   corr,
-  skew,
-  kurtosis,
   erf,
   erfc,
   erfcinv,
-  normalInv,
+  kurtosis,
+  mean,
   normalCdf,
-  centralWeightedStdev,
+  normalInv,
   quantile,
   round,
-} from "../src/Math";
-const sqr = (x: number) => x * x;
+  skew,
+  sqr,
+  stdev,
+  sum,
+} from "../src";
 
 describe("Math", () => {
   it("sum", () => {

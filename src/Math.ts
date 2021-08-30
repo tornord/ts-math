@@ -1,5 +1,6 @@
 const { sqrt, log, exp, cos, PI, pow, SQRT2, floor } = Math;
-const sqr = (x: number) => x * x;
+
+export const sqr = (x: number) => x * x;
 
 // \operatorname{sum}(x)=\sum{x}
 export function sum(xs: number[]) {

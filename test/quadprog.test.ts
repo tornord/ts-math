@@ -1,4 +1,6 @@
-import { solveQP, base0to1, base1to0 } from "../src/quadprog";
+import { expect } from "chai";
+
+import { solveQP, base0to1, base1to0 } from "../src";
 
 const { sqrt } = Math;
 

@@ -1,4 +1,6 @@
-import { numberFormat, numberFormatFun, smartRound, twoDecPriceFormat } from "../src/FormatFunctions";
+import { expect } from "chai";
+
+import { numberFormat, numberFormatFun, smartRound, twoDecPriceFormat } from "../src";
 
 describe("FormatFunctions", () => {
   it("numberFormat", () => {

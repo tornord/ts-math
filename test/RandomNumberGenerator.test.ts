@@ -1,5 +1,6 @@
-import { RandomNumberGenerator } from "../src/RandomNumberGenerator";
-import seedrandom from "seedrandom";
+import { expect } from "chai";
+
+import { RandomNumberGenerator, seedrandom } from "../src";
 
 describe("RandomNumberGenerator", () => {
     it("seedrandom", () => {

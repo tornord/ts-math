@@ -19,7 +19,8 @@
       "env": {
         "NODE_OPTIONS": "--experimental-vm-modules --no-warnings --max_old_space_size=2048"
       },
-      "console": "integratedTerminal"
+      "console": "integratedTerminal",
+      "runtimeExecutable": "${env:HOME}/.nvm/versions/node/v14.16.0/bin/node",
     }
   ]
 }

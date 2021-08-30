@@ -1,3 +1,4 @@
+export declare const sqr: (x: number) => number;
 export declare function sum(xs: number[]): number;
 export declare function mean(xs: number[]): number;
 /**

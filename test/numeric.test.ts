@@ -1,6 +1,6 @@
-import numeric from "numeric";
+import { expect } from "chai";
 
-import { round } from "../src/Math";
+import { round, numeric } from "../src";
 
 type Vector = number[];
 type Matrix = number[][];
