@@ -9,5 +9,6 @@ export * from "./RandomNumberGenerator";
 export * from "./permute";
 export * from "./brownianBridge";
 export * from "./sobol";
+export * from "./cholesky";
 
 export { fmin, numeric, seedrandom };
