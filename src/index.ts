@@ -7,5 +7,7 @@ export * from "./Math";
 export * from "./quadprog";
 export * from "./RandomNumberGenerator";
 export * from "./permute";
+export * from "./brownianBridge";
+export * from "./sobol";
 
 export { fmin, numeric, seedrandom };
