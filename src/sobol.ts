@@ -42,7 +42,7 @@ export class SobolSequenceGenerator {
   x: number[];
   json: any;
 
-  nextVector() {
+  nextSample() {
     let v = [];
     let c = 1;
     let value = this.count;
@@ -59,6 +59,8 @@ export class SobolSequenceGenerator {
   }
 
   skip(n: number) {
-    this.nextVector();
+    for (let i = 0; i < n; i++) {
+      this.nextSample();
+    }
   }
 }

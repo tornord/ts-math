@@ -6,7 +6,7 @@ describe("sobol", () => {
     const s = new SobolSequenceGenerator(5);
     const res = [];
     for (let i = 0; i < 5; i++) {
-      res.push(s.nextVector());
+      res.push(s.nextSample());
     }
     expect(res).to.deep.equal([
       [0.5, 0.5, 0.5, 0.5, 0.5],
