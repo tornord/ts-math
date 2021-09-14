@@ -1,3 +1,5 @@
+import { cholesky, normalInv, SobolSequenceGenerator } from ".";
+
 const { ceil, log2, sqrt, exp, log } = Math;
 
 interface BridgeStep {
@@ -93,5 +95,37 @@ export class BrownianBridge {
   }
 }
 
-// const bb = new BrownianBridge(5);
-// console.log(bb);
+/**
+ * createNormalSamples genrates normally distributed samples. They are correlated if parameter 
+ * corrs is passed as a square matrix number[][].
+ * @param nSamples Number of samples to be returned.
+ * @param nDim Number of dimensions.
+ * @param corrs Correlation matrix, a square {nDim x nDim} matrix.
+ * @returns samples as a number[][] matrix, nSamples rows and nDim columns.
+ */
+export function createNormalSamples(nSamples: number, nDim: number, corrs: number[][] | null = null) {
+  const ssg = new SobolSequenceGenerator(nDim);
+  ssg.skip(3);
+  const bb = new BrownianBridge(nDim);
+  const res = new Array(nSamples);
+  const chol = corrs ? cholesky(corrs) : null;
+  for (let i = 0; i < nSamples; i++) {
+    const ns = ssg.nextSample();
+    const r = bb.calculateSample(ns.map((d) => normalInv(d, 0, 1)));
+    if (chol) {
+      let q = new Array(nDim);
+      for (let j = 0; j < nDim; j++) {
+        const cs = chol[j];
+        let p = 0;
+        for (let k = 0; k <= j; k++) {
+          p += cs[k] * r[k];
+        }
+        q[j] = p;
+      }
+      res[i] = q;
+    } else {
+      res[i] = r;
+    }
+  }
+  return res;
+}
