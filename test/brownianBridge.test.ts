@@ -1,4 +1,4 @@
-import { BrownianBridge, normalInv, round, SobolSequenceGenerator } from "../src";
+import { BrownianBridge, corr, createNormalSamples, normalInv, round, SobolSequenceGenerator, stdev } from "../src";
 
 describe("BrownianBridge", () => {
   it("constructor", () => {
@@ -32,5 +32,59 @@ describe("BrownianBridge", () => {
     const bb = new BrownianBridge(5);
     const bs = bb.calculateSample(ns.map((d) => normalInv(d, 0, 1)));
     expect(bs.map((d) => round(d, 4))).to.deep.equal([0.4964, -1.1304, 0.234, -0.3815, 0.0691]);
+  });
+  it("createNormalSamples", () => {
+    const n = 4000;
+    const nAssets = 2;
+    const rho = 0.4;
+    const corrs = [
+      [1, rho],
+      [rho, 1],
+    ];
+    const ns = createNormalSamples(n, nAssets, corrs);
+    expect(
+      [
+        stdev(ns.map((d) => d[0])),
+        stdev(ns.map((d) => d[1])),
+        corr(
+          ns.map((d) => d[0]),
+          ns.map((d) => d[1])
+        ),
+      ].map((d) => round(d, 2))
+    ).to.deep.equal([1, 1, 0.4]);
+  });
+  it("createNormalSamples", () => {
+    const n = 4000;
+    const corrs = [
+      [1, 0.5, 0.2],
+      [0.5, 1, 0.4],
+      [0.2, 0.4, 1],
+    ];
+    const ns = createNormalSamples(n, corrs.length, corrs);
+    expect(
+      [
+        [0, 1],
+        [0, 2],
+        [1, 2],
+      ]
+        .map(([i0, i1]) =>
+          corr(
+            ns.map((d) => d[i0]),
+            ns.map((d) => d[i1])
+          )
+        )
+        .map((d) => round(d, 2))
+    ).to.deep.equal([0.5, 0.2, 0.4]);
+  });
+  it("createNormalSamples", () => {
+    const n = 4000;
+    const nAssets = 2;
+    const ns = createNormalSamples(n, nAssets);
+    expect(round(
+      corr(
+        ns.map((d) => d[0]),
+        ns.map((d) => d[1])
+      ),3)
+    ).to.deep.equal(-0);
   });
 });
