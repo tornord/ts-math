@@ -3,6 +3,7 @@ import { expect } from "chai";
 import {
   centralWeightedStdev,
   corr,
+  cov,
   erf,
   erfc,
   erfcinv,
@@ -32,6 +33,11 @@ describe("Math", () => {
   });
   it("corr", () => {
     expect(corr([0, 2, 3, 4, 5, 6], [2, 3, 4, 5, 6, 8])).to.equal(0.9714285714285714);
+  });
+  it("cov", () => {
+    const x = [82, 56, 88, 67, 91, 92, 59, 78, 69, 85, 79, 56];
+    const y = [12, 9, 14, 11, 15, 17, 10, 19, 18, 20, 19, 6];
+    expect(cov(x, y)).to.equal(41.69696969696964);
   });
   it("skew", () => {
     expect(skew([0, 2, 3, 4, 5, 8])).to.equal(0.4345805012348935);

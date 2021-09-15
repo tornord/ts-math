@@ -42,7 +42,7 @@ export function stdev(xs: number[]) {
  * \operatorname{corr}(x,y)=\frac{n\sum{xy}-\sum{x}\sum{y}}{\sqrt{(n\sum{x^2}-(\sum{x})^2)(n\sum{y^2}-(\sum{y})^2)}}
  * ```
  */
-export function corr(xs: number[], ys: number[]) {
+ export function corr(xs: number[], ys: number[]) {
   var n = xs.length;
   var sx = 0;
   var sy = 0;
@@ -59,6 +59,21 @@ export function corr(xs: number[], ys: number[]) {
     sy2 += sqr(y);
   }
   return (n * sxy - sx * sy) / sqrt((n * sx2 - sqr(sx)) * (n * sy2 - sqr(sy)));
+}
+
+export function cov(xs: number[], ys: number[]) {
+  var n = xs.length;
+  var sx = 0;
+  var sy = 0;
+  var sxy = 0;
+  for (let i = 0; i < n; i++) {
+    let x = xs[i];
+    let y = ys[i];
+    sx += x;
+    sy += y;
+    sxy += x * y;
+  }
+  return (sxy - sx * sy / n) / (n - 1);
 }
 
 /**
@@ -220,9 +235,7 @@ export function centralWeightedStdev(vs: number[]): number {
  */
 export function quantile(xs: number[], q: number) {
   var index, i;
-  xs.sort(function (a, b) {
-    return a - b;
-  }); //sort smallest to largest
+  xs.sort((a, b) => a - b); //sort smallest to largest
   index = q * (xs.length - 1);
   i = floor(index);
   if (i === index) return xs[index];
