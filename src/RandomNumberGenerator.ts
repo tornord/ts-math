@@ -2,12 +2,12 @@ import seedrandom from "seedrandom";
 
 class MondayToFridayCalendar {
   constructor() {
-      this.name = "Monday to Friday";
+    this.name = "Monday to Friday";
   }
   name: string;
   isBusinessDay(date: string) {
-      let w = new Date(date).getUTCDay();
-      return w >= 1 && w <= 5;
+    let w = new Date(date).getUTCDay();
+    return w >= 1 && w <= 5;
   }
 }
 
@@ -130,5 +130,17 @@ export class RandomNumberGenerator {
   randomObjectId() {
     const x8 = () => floor(this.randomInt(4294967296)).toString(16);
     return x8() + x8() + x8();
+  }
+
+  shuffle(array: any[]) {
+    const n = array.length;
+    for (let i = 0; i < n - 1; i++) {
+      const r = this.randomInt(n - 1 - i);
+      const i1 = i + 1 + r;
+      const t = array[i1];
+      array[i1] = array[i];
+      array[i] = t;
+    }
+    return array;
   }
 }

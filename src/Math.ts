@@ -61,7 +61,13 @@ export function stdev(xs: number[]) {
   return (n * sxy - sx * sy) / sqrt((n * sx2 - sqr(sx)) * (n * sy2 - sqr(sy)));
 }
 
-export function cov(xs: number[], ys: number[]) {
+/**
+ * The cov function calculates the covariance between the two arrays.
+ * ```
+ * \operatorname{cov}(x,y)=\frac{\sum{xy}-\frac{\sum{x}\sum{y}}{n}}{n-1}
+ * ```
+ */
+ export function cov(xs: number[], ys: number[]) {
   var n = xs.length;
   var sx = 0;
   var sy = 0;
