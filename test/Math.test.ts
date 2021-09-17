@@ -12,6 +12,7 @@ import {
   normalCdf,
   normalInv,
   quantile,
+  range,
   round,
   skew,
   sqr,
@@ -116,5 +117,11 @@ describe("Math", () => {
     expect(round(-0.875, 2)).to.equal(-0.88);
     expect(round(9225 * 10.703, 2)).to.equal(98735.18); // 9225 * 10.703 = 98735.175
     expect(round(0.4999999999, 0)).to.equal(1);
+  });
+  it("range", () => {
+    expect(range(0)).to.deep.equal([]);
+    expect(range(1)).to.deep.equal([0]);
+    expect(range(10)).to.deep.equal([0,1,2,3,4,5,6,7,8,9]);
+    expect(range(137).length).to.deep.equal(137);
   });
 });

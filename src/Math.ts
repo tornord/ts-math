@@ -256,3 +256,16 @@ export function round(x: number, decimals: number) {
   var p = pow(10, decimals);
   return (Math.sign(x) * Math.round(p * Math.abs(x) + 0.01 / p)) / p;
 }
+
+/**
+ * Generates an array of numbers. Values are set to 0 up to n-1, incrementing by 1.
+ * @param n The numbers of array items.
+ * @returns array of numbers
+ */
+export function range(n: number): number[] {
+  const res = new Array(n);
+  for (let i = 0; i < n; i++) {
+    res[i] = i;
+  }
+  return res;
+}
