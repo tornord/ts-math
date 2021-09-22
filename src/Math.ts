@@ -269,3 +269,38 @@ export function range(n: number): number[] {
   }
   return res;
 }
+
+/**
+ * Returns the index of the highest element that is lower or equal to t. The input array must be ordered in ascending order.
+ * @param t 
+ * @param vs 
+ * @returns 
+ */
+export function indexOf(t: number, vs: number[]): number {
+  let i = -1;
+  let n = vs.length;
+  if (n === 0) return -1;
+  else if (t < vs[0]) return -1;
+  else if (t >= vs[n - 1]) return n - 1;
+
+  if (n > 40) {
+    //Binary search if >40 (otherwise it's no gain using it)
+    let hi = n - 1;
+    let low = 0;
+    if (t.valueOf() >= vs[hi]) return hi;
+    while (hi > low + 1) {
+      i = Math.floor((hi + low) / 2);
+      if (t >= vs[i]) low = i;
+      else {
+        hi = i;
+        i = low;
+      }
+    }
+    return i;
+  } else {
+    //Incremental search
+    i = 1;
+    while (t >= vs[i] && i < n - 1) i++;
+    return i - 1;
+  }
+}

@@ -7,6 +7,7 @@ import {
   erf,
   erfc,
   erfcinv,
+  indexOf,
   kurtosis,
   mean,
   normalCdf,
@@ -121,7 +122,17 @@ describe("Math", () => {
   it("range", () => {
     expect(range(0)).to.deep.equal([]);
     expect(range(1)).to.deep.equal([0]);
-    expect(range(10)).to.deep.equal([0,1,2,3,4,5,6,7,8,9]);
+    expect(range(10)).to.deep.equal([0, 1, 2, 3, 4, 5, 6, 7, 8, 9]);
     expect(range(137).length).to.deep.equal(137);
+  });
+
+  it("indexOf", () => {
+    let xs = range(40);
+    expect(indexOf(0, xs)).to.equal(0);
+    expect(indexOf(7, xs)).to.equal(7);
+    expect(indexOf(Math.PI, xs)).to.equal(3);
+    expect(indexOf(39.5, xs)).to.equal(39);
+    expect(indexOf(50, xs)).to.equal(39);
+    expect(indexOf(-2, xs)).to.equal(-1);
   });
 });

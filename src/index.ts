@@ -10,5 +10,6 @@ export * from "./permute";
 export * from "./brownianBridge";
 export * from "./sobol";
 export * from "./cholesky";
+export * from "./interpolation";
 
 export { fmin, numeric, seedrandom };
