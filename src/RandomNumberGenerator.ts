@@ -132,6 +132,11 @@ export class RandomNumberGenerator {
     return x8() + x8() + x8();
   }
 
+  /**
+   * Randomly shuffles the array. The method works in-place (like sort and reverse).
+   * @param array 
+   * @returns 
+   */
   shuffle(array: any[]) {
     const n = array.length;
     for (let i = 0; i < n - 1; i++) {

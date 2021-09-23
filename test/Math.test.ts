@@ -1,7 +1,6 @@
 import { expect } from "chai";
 
 import {
-  centralWeightedStdev,
   corr,
   cov,
   erf,
@@ -9,9 +8,11 @@ import {
   erfcinv,
   indexOf,
   kurtosis,
+  linearRegression,
   mean,
   normalCdf,
   normalInv,
+  qqRegression,
   quantile,
   range,
   round,
@@ -86,18 +87,6 @@ describe("Math", () => {
   it("normalCdf", () => {
     expect(normalCdf(0.25, 0, 1)).to.equal(0.5987063256829237);
   });
-  it("centralWeightedStdev", () => {
-    var xs = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
-
-    expect(round(stdev(xs), 9)).to.equal(3.027650354);
-    expect(round(centralWeightedStdev(xs), 9)).to.equal(3.535199883);
-    xs = [
-      -1.593218818, -0.967421566, -0.589455798, -0.282216147, 0, 0.282216147, 0.589455798, 0.967421566, 1.593218818,
-    ];
-
-    expect(round(stdev(xs), 9)).to.equal(0.987592373);
-    expect(round(centralWeightedStdev(xs), 9)).to.equal(1);
-  });
   it("quantile", () => {
     var xs = [10, 7, 4, 3, 2, 1];
 
@@ -134,5 +123,33 @@ describe("Math", () => {
     expect(indexOf(39.5, xs)).to.equal(39);
     expect(indexOf(50, xs)).to.equal(39);
     expect(indexOf(-2, xs)).to.equal(-1);
+  });
+
+  it("linearRegression", () => {
+    expect(linearRegression([1, 2, 3], [3, 1, -1])).to.deep.equal({ k: -2, b: 5, error: 0 });
+    expect(linearRegression([1, 2, 3], [1.5, 2, 2.5])).to.deep.equal({ k: 0.5, b: 1, error: 0 });
+    expect(linearRegression([1, 2.25, 3], [1, 2, 3])).to.deep.equal({
+      k: 0.9795918367346939,
+      b: -0.04081632653061224,
+      error: 0.013605442176870744,
+    });
+    expect(linearRegression([1, 2, 3], [1, 2.25, 3])).to.deep.equal({
+      k: 1,
+      b: 0.08333333333333333,
+      error: 0.013888888888888876,
+    });
+    expect(linearRegression([1, 2.25, 3], [1, 2, 3], [1, 0, 1])).to.deep.equal({ k: 1, b: 0, error: 0 });
+  });
+  it("qqRegression", () => {
+    var xs = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
+
+    expect(round(stdev(xs), 9)).to.equal(3.027650354);
+    expect(round(qqRegression(xs).stdev, 9)).to.equal(3.036277831);
+    expect(round(qqRegression(xs, true).stdev, 9)).to.equal(3.535199883);
+
+    xs = [...Array(9)].map((d, i, a) => normalInv((i + 0.5) / a.length, 0, 1));
+    expect(round(stdev(xs), 9)).to.equal(0.987592373);
+    const res = qqRegression(xs);
+    expect(res).to.deep.equal({ stdev: 1, mean: 0, error: 0 });
   });
 });

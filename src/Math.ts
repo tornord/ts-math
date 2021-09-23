@@ -42,7 +42,7 @@ export function stdev(xs: number[]) {
  * \operatorname{corr}(x,y)=\frac{n\sum{xy}-\sum{x}\sum{y}}{\sqrt{(n\sum{x^2}-(\sum{x})^2)(n\sum{y^2}-(\sum{y})^2)}}
  * ```
  */
- export function corr(xs: number[], ys: number[]) {
+export function corr(xs: number[], ys: number[]) {
   var n = xs.length;
   var sx = 0;
   var sy = 0;
@@ -67,7 +67,7 @@ export function stdev(xs: number[]) {
  * \operatorname{cov}(x,y)=\frac{\sum{xy}-\frac{\sum{x}\sum{y}}{n}}{n-1}
  * ```
  */
- export function cov(xs: number[], ys: number[]) {
+export function cov(xs: number[], ys: number[]) {
   var n = xs.length;
   var sx = 0;
   var sy = 0;
@@ -79,7 +79,7 @@ export function stdev(xs: number[]) {
     sy += y;
     sxy += x * y;
   }
-  return (sxy - sx * sy / n) / (n - 1);
+  return (sxy - (sx * sy) / n) / (n - 1);
 }
 
 /**
@@ -208,35 +208,6 @@ export function normalCdf(x: number, mu: number, sigma: number) {
 }
 
 /**
- * Central weighted standard deviation. Calculates standard deviation on samples. Sorts the samples in ascending order and weights them
- * central weighted. The standard deviation is estimated as linear regression from the QQ-plot. The function is useful when the input
- * data is normal distributed and contains erroneous values (eg. time series data with jumps and spikes).
- */
-export function centralWeightedStdev(vs: number[]): number {
-  vs.sort((d1, d2) => d1 - d2);
-  var swx = 0.0;
-  var swx2 = 0.0;
-  var sw = 0.0;
-  var swy = 0.0;
-  var swxy = 0.0;
-  var n = vs.length;
-  for (var i = 0; i < n; i++) {
-    var u = (i + 0.5) / n;
-    var x = normalInv(u, 0, 1);
-    var w = (1 + cos(2 * PI * (u - 0.5))) / 2;
-    var y = vs[i];
-    var xw = x * w;
-    swx += xw;
-    swx2 += xw * x;
-    sw += w;
-    swy += w * y;
-    swxy += xw * y;
-  }
-  var a = swx * swx - swx2 * sw;
-  return (swy * swx - swxy * sw) / a;
-}
-
-/**
  * Function that returns the q-th quantile of a dataset (same as numpy.quantile in Python)
  */
 export function quantile(xs: number[], q: number) {
@@ -272,9 +243,9 @@ export function range(n: number): number[] {
 
 /**
  * Returns the index of the highest element that is lower or equal to t. The input array must be ordered in ascending order.
- * @param t 
- * @param vs 
- * @returns 
+ * @param t
+ * @param vs
+ * @returns
  */
 export function indexOf(t: number, vs: number[]): number {
   let i = -1;
@@ -303,4 +274,63 @@ export function indexOf(t: number, vs: number[]): number {
     while (t >= vs[i] && i < n - 1) i++;
     return i - 1;
   }
+}
+
+/**
+ * Linear regression of xs-values against ys-values. Weighted by ws-values (if included).
+ * @param xs
+ * @param ys
+ * @param ws
+ * @returns
+ */
+export function linearRegression(xs: number[], ys: number[], ws: number[] | null = null) {
+  var swx = 0.0;
+  var swx2 = 0.0;
+  var sw = 0.0;
+  var swy = 0.0;
+  var swxy = 0.0;
+  var n = xs.length;
+  for (var i = 0; i < n; i++) {
+    var x = xs[i];
+    var w = ws ? ws[i] : 1;
+    var y = ys[i];
+    var xw = x * w;
+    swx += xw;
+    swx2 += xw * x;
+    sw += w;
+    swy += w * y;
+    swxy += xw * y;
+  }
+  const a = swx2 * sw - sqr(swx);
+  const k = (swxy * sw - swx * swy) / a;
+  const b = (swx2 * swy - swxy * swx) / a;
+  let error = 0;
+  for (var i = 0; i < n; i++) {
+    error += sqr(k * xs[i] + b - ys[i]) * (ws ? ws[i] : 1);
+  }
+  error /= sw;
+  return { k, b, error };
+}
+
+/**
+ * Assumes the vs-values are normally distributed, adds them to a QQ-plot and estimates the mean, stdev by linear regression in the plot. 
+ * The values in the QQ-plot can be centrally weighted (useful if data can contain anomalies or non-normally extreme jumps).
+ * @param vs
+ * @param centrallyWeighted true or false
+ * @returns
+ */
+export function qqRegression(vs: number[], centrallyWeighted: boolean = false) {
+  const n = vs.length;
+  vs.sort((d1, d2) => d1 - d2);
+  const xs = new Array(n);
+  const ws = centrallyWeighted ? new Array(n) : null;
+  for (var i = 0; i < n; i++) {
+    var u = (i + 0.5) / n;
+    xs[i] = normalInv(u, 0, 1);
+    if (centrallyWeighted) {
+      ws[i] = (1 + cos(2 * PI * (u - 0.5))) / 2;
+    }
+  }
+  const { k, b, error } = linearRegression(xs, vs, ws);
+  return { stdev: k, mean: b, error };
 }
