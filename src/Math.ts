@@ -1,3 +1,5 @@
+import numeric from "numeric";
+
 const { sqrt, log, exp, cos, PI, pow, SQRT2, floor } = Math;
 
 export const sqr = (x: number) => x * x;
@@ -284,17 +286,17 @@ export function indexOf(t: number, vs: number[]): number {
  * @returns
  */
 export function linearRegression(xs: number[], ys: number[], ws: number[] | null = null) {
-  var swx = 0.0;
-  var swx2 = 0.0;
-  var sw = 0.0;
-  var swy = 0.0;
-  var swxy = 0.0;
-  var n = xs.length;
-  for (var i = 0; i < n; i++) {
-    var x = xs[i];
-    var w = ws ? ws[i] : 1;
-    var y = ys[i];
-    var xw = x * w;
+  let swx = 0.0;
+  let swx2 = 0.0;
+  let sw = 0.0;
+  let swy = 0.0;
+  let swxy = 0.0;
+  const n = xs.length;
+  for (let i = 0; i < n; i++) {
+    const x = xs[i];
+    const w = ws ? ws[i] : 1;
+    const y = ys[i];
+    const xw = x * w;
     swx += xw;
     swx2 += xw * x;
     sw += w;
@@ -305,7 +307,7 @@ export function linearRegression(xs: number[], ys: number[], ws: number[] | null
   const k = (swxy * sw - swx * swy) / a;
   const b = (swx2 * swy - swxy * swx) / a;
   let error = 0;
-  for (var i = 0; i < n; i++) {
+  for (let i = 0; i < n; i++) {
     error += sqr(k * xs[i] + b - ys[i]) * (ws ? ws[i] : 1);
   }
   error /= sw;
@@ -313,7 +315,7 @@ export function linearRegression(xs: number[], ys: number[], ws: number[] | null
 }
 
 /**
- * Assumes the vs-values are normally distributed, adds them to a QQ-plot and estimates the mean, stdev by linear regression in the plot. 
+ * Assumes the vs-values are normally distributed, adds them to a QQ-plot and estimates the mean, stdev by linear regression in the plot.
  * The values in the QQ-plot can be centrally weighted (useful if data can contain anomalies or non-normally extreme jumps).
  * @param vs
  * @param centrallyWeighted true or false
@@ -324,8 +326,8 @@ export function qqRegression(vs: number[], centrallyWeighted: boolean = false) {
   vs.sort((d1, d2) => d1 - d2);
   const xs = new Array(n);
   const ws = centrallyWeighted ? new Array(n) : null;
-  for (var i = 0; i < n; i++) {
-    var u = (i + 0.5) / n;
+  for (let i = 0; i < n; i++) {
+    let u = (i + 0.5) / n;
     xs[i] = normalInv(u, 0, 1);
     if (centrallyWeighted) {
       ws[i] = (1 + cos(2 * PI * (u - 0.5))) / 2;
@@ -333,4 +335,21 @@ export function qqRegression(vs: number[], centrallyWeighted: boolean = false) {
   }
   const { k, b, error } = linearRegression(xs, vs, ws);
   return { stdev: k, mean: b, error };
+}
+
+/**
+ * Polynomial regression. Estimates the coefficients of the polynomial expression the fits the xs and ys-values. Weighted by ws-values (if included).
+ * @param xs x-values
+ * @param ys y-values
+ * @param ws weights
+ * @returns coefficients array
+ */
+export function polynomialRegression(xs: number[], ys: number[], ws: number[] | null = null, n: number): number[] {
+  const xxs = xs.map((d) => [...Array(n + 1)].map((e, i) => pow(d, n - i)));
+  let wxs = ws ? xxs.map((d, i) => d.map((e) => ws[i] * e)) : xxs;
+  const xsT = numeric.transpose(xxs);
+  const xsTxs = numeric.dot(xsT, wxs);
+  const xsTys = numeric.dot(xsT, ws ? ys.map((d, i) => d * ws[i]) : ys);
+  const res = numeric.solve(xsTxs as number[][], xsTys as number[]);
+  return res;
 }

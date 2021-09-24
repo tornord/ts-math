@@ -1,6 +1,6 @@
 {
   "name": "ts-math",
-  "version": "1.0.12",
+  "version": "1.0.13",
   "description": "A collection of math functions and packages written in Typescript",
   "main": "lib/index.js",
   "directories": {
@@ -14,7 +14,14 @@
     "type": "git",
     "url": "git+https://github.com/tornord/ts-math.git"
   },
-  "keywords": ["math", "statistics", "sobol", "random numbers"],
+  "keywords": [
+    "math",
+    "statistics",
+    "sobol",
+    "random numbers",
+    "linear algebra",
+    "interpolation"
+  ],
   "author": "",
   "license": "ISC",
   "bugs": {
