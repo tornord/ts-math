@@ -1815,9 +1815,9 @@ function logGamma( x ) {
 
 }
 
-function gamma( x, y, z ) {
+function gamma( x, y = null, z = null ) {
 
-  if ( arguments.length === 2 ) {
+  if ( y !== null && z === null ) {
 
     if ( isZero(x) ) {
 
@@ -1853,7 +1853,7 @@ function gamma( x, y, z ) {
 
   }
 
-  if ( arguments.length === 3 ) {
+  if ( y !== null && z !== null ) {
 
     if ( !isZero(y) ) return sub( gamma(x,0,z), gamma(x,0,y) );
 
