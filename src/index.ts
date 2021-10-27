@@ -11,5 +11,6 @@ export * from "./brownianBridge";
 export * from "./sobol";
 export * from "./cholesky";
 export * from "./interpolation";
+export { hypergeometric2F1 } from "./hypergeometric";
 
 export { fmin, numeric, seedrandom };

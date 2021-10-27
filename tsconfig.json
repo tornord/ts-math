@@ -3,6 +3,7 @@
     "files": true
   },
   "compilerOptions": {
+    "allowJs": true,
     "allowSyntheticDefaultImports": true,
     "declaration": true,
     "esModuleInterop": true,
@@ -21,5 +22,5 @@
     "types": ["node", "mocha"]
   },
   "include": ["src", "@types"],
-  "exclude": ["src/**/*test.ts", "node_modules"]
+  "exclude": ["src/**/*test.ts", "node_modules", "src/hypergeometric/math.js"]
 }
