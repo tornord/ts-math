@@ -1,13 +1,13 @@
 import { expect } from "chai";
 
-import { hypergeometric2F1 } from "../src";
+import { hypergeometric2F1, gamma } from "../src";
 
-const {PI}=Math
+const { PI } = Math;
 
 describe("hypergeometric", () => {
   it("hypergeometric2F1 without pfaffLimit", () => {
     let z = hypergeometric2F1(1, 0.5, 1.5, -1);
-    expect(z).to.equal(0.7853981633619087) // PI / 4 = 0.7853981633974483
+    expect(z).to.equal(0.7853981633619087); // PI / 4 = 0.7853981633974483
 
     expect(hypergeometric2F1(1, 0.5, 1.5, -1)).to.equal(0.7853981633619087); // iterations = 32, calculated at x = 0.5
     expect(hypergeometric2F1(1, 0.5, 1.5, -0.9)).to.equal(0.8001302551327127); // iterations = 165
@@ -26,4 +26,10 @@ describe("hypergeometric", () => {
     expect(hypergeometric2F1(1, 0.5, 1.5, -0.999999, 1e-10, -0.8)).to.equal(0.7853983060610359); // iterations = 32
   });
 
+  it("gamma", () => {
+    expect(gamma(2)).to.equal(1);
+    expect(gamma(3)).to.equal(2);
+    expect(gamma(4)).to.equal(6);
+    expect(gamma(0.5)).to.equal(1.7724538509055165); // Math.sqrt(Math.PI)
+  });
 });
