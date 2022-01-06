@@ -260,11 +260,12 @@ export function indexOf(t: number, vs: number[]): number {
     //Binary search if >40 (otherwise it's no gain using it)
     let hi = n - 1;
     let low = 0;
-    if (t.valueOf() >= vs[hi]) return hi;
+    if (t >= vs[hi]) return hi;
     while (hi > low + 1) {
-      i = Math.floor((hi + low) / 2);
-      if (t >= vs[i]) low = i;
-      else {
+      i = floor((hi + low) / 2);
+      if (t >= vs[i]) {
+        low = i;
+      } else {
         hi = i;
         i = low;
       }
@@ -273,7 +274,9 @@ export function indexOf(t: number, vs: number[]): number {
   } else {
     //Incremental search
     i = 1;
-    while (t >= vs[i] && i < n - 1) i++;
+    while (t >= vs[i] && i < n - 1) {
+      i++;
+    }
     return i - 1;
   }
 }

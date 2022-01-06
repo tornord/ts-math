@@ -1,8 +1,8 @@
 import { expect } from "chai";
 
-import { hypergeometric2F1, gamma } from "../src";
+import { hypergeometric2F1, gamma, sqr, round } from "../src";
 
-const { PI } = Math;
+const { PI, exp, atan } = Math;
 
 describe("hypergeometric", () => {
   it("hypergeometric2F1 without pfaffLimit", () => {
@@ -17,6 +17,7 @@ describe("hypergeometric", () => {
   });
 
   it("hypergeometric2F1 with pfaffLimit", () => {
+    // https://keisan.casio.com/exec/system/1349143084
     expect(hypergeometric2F1(1, 0.5, 1.5, -1, 1e-10, -0.8)).to.equal(0.7853981633619087); // iterations = 32
     expect(hypergeometric2F1(1, 0.5, 1.5, -0.9, 1e-10, -0.8)).to.equal(0.8001302550587772); // iterations = 30
     expect(hypergeometric2F1(1, 0.5, 1.5, -0.99, 1e-10, -0.8)).to.equal(0.7868296229500767); // iterations = 32
@@ -24,6 +25,12 @@ describe("hypergeometric", () => {
     expect(hypergeometric2F1(1, 0.5, 1.5, -0.9999, 1e-10, -0.8)).to.equal(0.7854124337153949); // iterations = 32
     expect(hypergeometric2F1(1, 0.5, 1.5, -0.99999, 1e-10, -0.8)).to.equal(0.7853995903571841); // iterations = 32
     expect(hypergeometric2F1(1, 0.5, 1.5, -0.999999, 1e-10, -0.8)).to.equal(0.7853983060610359); // iterations = 32
+  });
+
+  it("hypergeometric2F1 and atan", () => {
+    // https://proofwiki.org/wiki/Arctangent_Function_in_terms_of_Gaussian_Hypergeometric_Function
+    let x = exp(-0.5);
+    expect(round(x * hypergeometric2F1(1, 0.5, 1.5, -sqr(x), 1e-10, -0.8), 6)).to.equal(round(atan(x), 6));
   });
 
   it("gamma", () => {
