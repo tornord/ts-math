@@ -1,5 +1,4 @@
-import { round, numeric } from "../src";
-import { indexOf } from ".";
+import { indexOf, round, numeric } from ".";
 
 const { hypot, pow, floor, max } = Math;
 
@@ -301,7 +300,7 @@ export class ConstrainedCubicSpline {
     if (this.endDerivative === null) {
       addAbcEquation(aa, bs, n - 1, 3 * n - 1, [6, 2, 0], 0); // Natural constraint (second derivative=0)
     } else {
-      addAbcEquation(aa, bs, n - 1, 3 * n - 1, [3,2,1], this.endDerivative);
+      addAbcEquation(aa, bs, n - 1, 3 * n - 1, [3, 2, 1], this.endDerivative);
     }
     const res = numeric.solve(aa, bs);
     this.a = new Array(n - 1);
